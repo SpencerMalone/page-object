@@ -56,14 +56,12 @@ def patiently(&block)
     end
     yield
 
-  rescue => e
+  rescue Exception => e
     if (Time.now > end_time)
       raise e
-    end
-
-    until Time.now > end_time
-      retry
-    end
+    else
+     retry
+      end
   end
 end
 
