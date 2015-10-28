@@ -45,6 +45,29 @@ require 'selenium/webdriver/common/error'
 #
 # @see PageObject::Accessors to see what class level methods are added to this module at runtime.
 #
+
+def patiently(&block)
+  cycles = 0
+  end_time = Time.now + 15
+
+  begin
+    unless (@browser.nil?)
+    take_screenshot
+    end
+    yield
+
+  rescue => e
+    puts e
+    puts e.backtrace
+
+    until Time.now > end_time
+      retry
+    end
+    raise e
+  end
+end
+
+
 module PageObject
   include LoadsPlatform
   include ElementLocators
