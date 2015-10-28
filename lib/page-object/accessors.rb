@@ -210,14 +210,18 @@ module PageObject
     def text_field(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'text_field_for', &block)
       define_method(name) do
+      	patiently do
 	take_screenshot
         return platform.text_field_value_for identifier.clone unless block_given?
         self.send("#{name}_element").value
+        end
       end
       define_method("#{name}=") do |value|
+      	      	patiently do
         take_screenshot
         return platform.text_field_value_set(identifier.clone, value) unless block_given?
         self.send("#{name}_element").value = value
+        end
       end
     end
 
@@ -246,9 +250,12 @@ module PageObject
     def hidden_field(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'hidden_field_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.hidden_field_value_for identifier.clone unless block_given?
         self.send("#{name}_element").value
+        end
       end
     end
     alias_method :hidden, :hidden_field
@@ -278,14 +285,20 @@ module PageObject
     def text_area(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'text_area_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.text_area_value_for identifier.clone unless block_given?
         self.send("#{name}_element").value
+        end
       end
       define_method("#{name}=") do |value|
+      	      	patiently do
+
         take_screenshot
         return platform.text_area_value_set(identifier.clone, value) unless block_given?
         self.send("#{name}_element").value = value
+        end
       end
     end
     alias_method :textarea, :text_area
@@ -318,19 +331,28 @@ module PageObject
     def select_list(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'select_list_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.select_list_value_for identifier.clone unless block_given?
         self.send("#{name}_element").value
+        end
       end
       define_method("#{name}=") do |value|
+      	      	patiently do
+
         take_screenshot
         return platform.select_list_value_set(identifier.clone, value) unless block_given?
         self.send("#{name}_element").select(value)
+        end
       end
       define_method("#{name}_options") do
+      	      	patiently do
+
         take_screenshot
         element = self.send("#{name}_element")
         (element && element.options) ? element.options.collect(&:text) : []
+        end
       end
     end
     alias_method :select, :select_list
@@ -363,9 +385,12 @@ module PageObject
     def link(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'link_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.click_link_for identifier.clone unless block_given?
         self.send("#{name}_element").click
+        end
       end
     end
     alias_method :a, :link
@@ -397,19 +422,28 @@ module PageObject
     def checkbox(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'checkbox_for', &block)
       define_method("check_#{name}") do
+      	      	patiently do
+
 	take_screenshot
         return platform.check_checkbox(identifier.clone) unless block_given?
         self.send("#{name}_element").check
+        end
       end
       define_method("uncheck_#{name}") do
+      	      	patiently do
+
 	take_screenshot
         return platform.uncheck_checkbox(identifier.clone) unless block_given?
         self.send("#{name}_element").uncheck
+        end
       end
       define_method("#{name}_checked?") do
+      	      	patiently do
+
 	take_screenshot
         return platform.checkbox_checked?(identifier.clone) unless block_given?
         self.send("#{name}_element").checked?
+        end
       end
     end
 
@@ -440,14 +474,20 @@ module PageObject
     def radio_button(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'radio_button_for', &block)
       define_method("select_#{name}") do
+      	      	patiently do
+
 	take_screenshot
         return platform.select_radio(identifier.clone) unless block_given?
         self.send("#{name}_element").select
+        end
       end
       define_method("#{name}_selected?") do
+      	      	patiently do
+
 	take_screenshot
         return platform.radio_selected?(identifier.clone) unless block_given?
         self.send("#{name}_element").selected?
+        end
       end
     end
     alias_method :radio, :radio_button
@@ -474,35 +514,50 @@ module PageObject
     #
     def radio_button_group(name, identifier)
       define_method("select_#{name}") do |value|
+      	      	patiently do
+
         take_screenshot
         platform.radio_buttons_for(identifier.clone).each do |radio_elem|
           if radio_elem.value == value
             return radio_elem.select
           end
         end
+        end
       end
       define_method("#{name}_values") do
+      	      	patiently do
+
         take_screenshot
         result = []
         platform.radio_buttons_for(identifier.clone).each do |radio_elem|
           result << radio_elem.value
         end
         return result
+        end
       end
       define_method("#{name}_selected?") do
+      	      	patiently do
+
         take_screenshot
         platform.radio_buttons_for(identifier.clone).each do |radio_elem|
           return radio_elem.value if radio_elem.selected?
         end
         return false
+        end
       end
       define_method("#{name}_elements") do
+      	      	patiently do
+
         take_screenshot
         return platform.radio_buttons_for(identifier.clone)
+        end
       end
       define_method("#{name}?") do
+      	      	patiently do
+
         take_screenshot
         return platform.radio_buttons_for(identifier.clone).any?
+        end
       end
     end
     alias_method :radio_group, :radio_button_group
@@ -533,9 +588,12 @@ module PageObject
     def button(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'button_for', &block)
       define_method(name) do
+      	      	patiently do
+
         take_screenshot
         return platform.click_button_for identifier.clone unless block_given?
         self.send("#{name}_element").click
+        end
       end
     end
 
@@ -563,9 +621,12 @@ module PageObject
     def div(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'div_for', &block)
       define_method(name) do
+      	      	patiently do
+
         take_screenshot
         return platform.div_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -593,9 +654,12 @@ module PageObject
     def span(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'span_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.span_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -623,9 +687,12 @@ module PageObject
     def table(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'table_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.table_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -654,9 +721,12 @@ module PageObject
     def cell(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'cell_for', &block)
       define_method("#{name}") do
+      	      	patiently do
+
 	take_screenshot
         return platform.cell_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
     alias_method :td, :cell
@@ -686,9 +756,12 @@ module PageObject
     def row(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'row_for', &block)
       define_method("#{name}") do
+      	      	patiently do
+
 	take_screenshot
         return platform.row_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -765,9 +838,12 @@ module PageObject
     def list_item(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'list_item_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.list_item_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
     alias_method :li, :list_item
@@ -795,9 +871,12 @@ module PageObject
     def unordered_list(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'unordered_list_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.unordered_list_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
     alias_method :ul, :unordered_list
@@ -825,9 +904,12 @@ module PageObject
     def ordered_list(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'ordered_list_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.ordered_list_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
     alias_method :ol, :ordered_list
@@ -854,9 +936,12 @@ module PageObject
     def h1(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier,'h1_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h1_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -882,9 +967,12 @@ module PageObject
     def h2(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'h2_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h2_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -910,9 +998,12 @@ module PageObject
     def h3(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'h3_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h3_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -938,9 +1029,12 @@ module PageObject
     def h4(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'h4_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h4_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -966,9 +1060,12 @@ module PageObject
     def h5(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'h5_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h5_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -994,9 +1091,12 @@ module PageObject
     def h6(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'h6_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.h6_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -1022,9 +1122,12 @@ module PageObject
     def paragraph(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'paragraph_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.paragraph_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
     alias_method :p, :paragraph
@@ -1053,9 +1156,12 @@ module PageObject
     def file_field(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'file_field_for', &block)
       define_method("#{name}=") do |value|
+      	      	patiently do
+
         take_screenshot
         return platform.file_field_value_set(identifier.clone, value) unless block_given?
         self.send("#{name}_element").value = value
+        end
       end
     end
 
@@ -1082,9 +1188,12 @@ module PageObject
     def label(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'label_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.label_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -1111,9 +1220,12 @@ module PageObject
     def area(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier, 'area_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.click_area_for identifier.clone unless block_given?
         self.send("#{name}_element").click
+        end
       end
     end
 
@@ -1208,9 +1320,12 @@ module PageObject
     def b(name, identifier={:index => 0}, &block)
       standard_methods(name, identifier,'b_for', &block)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         return platform.b_text_for identifier.clone unless block_given?
         self.send("#{name}_element").text
+        end
       end
     end
 
@@ -1260,17 +1375,26 @@ module PageObject
     #
     def element(name, tag, identifier={:index => 0}, &block)
       define_method("#{name}") do
+      	      	patiently do
+
 	take_screenshot
         self.send("#{name}_element").text
+        end
       end
       define_method("#{name}_element") do
+      	      	patiently do
+
 	take_screenshot
         return call_block(&block) if block_given?
         platform.element_for(tag, identifier.clone)
+        end
       end
       define_method("#{name}?") do
+      	      	patiently do
+
 	take_screenshot
         self.send("#{name}_element").exists?
+        end
       end
     end
 
@@ -1296,9 +1420,12 @@ module PageObject
     #
     def elements(name, tag, identifier={:index => 0}, &block)
       define_method("#{name}_elements") do
+      	      	patiently do
+
 	take_screenshot
         return call_block(&block) if block_given?
         platform.elements_for(tag, identifier.clone)
+        end
       end
     end
 
@@ -1322,8 +1449,11 @@ module PageObject
     #
     def page_section(name, section_class, identifier)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         platform.page_for(identifier, section_class)
+        end
       end
     end
 
@@ -1347,8 +1477,11 @@ module PageObject
     #
     def page_sections(name, section_class, identifier)
       define_method(name) do
+      	      	patiently do
+
 	take_screenshot
         platform.pages_for(identifier, section_class)
+        end
       end
     end
 
@@ -1376,27 +1509,39 @@ module PageObject
     #
     LocatorGenerator::BASIC_ELEMENTS.each do |tag|
       define_method(tag) do |name, *identifier, &block|
+      	      	patiently do
+
         take_screenshot
         identifier = identifier[0] ? identifier[0] : {:index => 0}
         element(name, tag, identifier, &block)
+        end
       end
       define_method("#{tag}s") do |name, *identifier, &block|
+      	      	patiently do
+
         take_screenshot
         identifier = identifier[0] ? identifier[0] : {:index => 0}
         elements(name, tag, identifier, &block)
+        end
       end unless tag == :param
     end
 
     def standard_methods(name, identifier, method, &block)
       define_method("#{name}_element") do
+      	      	patiently do
+
         take_screenshot
         return call_block(&block) if block_given?
         platform.send(method, identifier.clone)
+        end
       end
       define_method("#{name}?") do
+      	      	patiently do
+
         take_screenshot
         return call_block(&block).exists? if block_given?
         platform.send(method, identifier.clone).exists?
+        end
       end
     end
 
@@ -1426,8 +1571,11 @@ module PageObject
     #
     def indexed_property (name, identifier_list)
       define_method("#{name}") do
+      	      	patiently do
+
         take_screenshot
         IndexedProperties::TableOfElements.new(@browser, identifier_list)
+        end
       end
     end
 
@@ -1452,10 +1600,13 @@ module PageObject
     elements.each do |method_name|
       define_method("#{method_name}s") do |name, *identifier, &block|
         define_method("#{name}_elements") do
+        	      	patiently do
+
           take_screenshot
           return call_block(&block) unless block.nil?
           platform_method = (method_name == :checkboxe) ? 'checkboxs_for' : "#{method_name.to_s}s_for"
           platform.send platform_method, (identifier.first ? identifier.first.clone : {})
+          end
         end
       end
     end
