@@ -57,16 +57,17 @@ def patiently(&block)
     yield
 
   rescue => e
-
+    if (Time.now > end_time)
+      raise e
+    end
 
     until Time.now > end_time
       retry
     end
-    puts e
-    puts e.backtrace
-    raise e
   end
 end
+
+
 
 
 module PageObject
