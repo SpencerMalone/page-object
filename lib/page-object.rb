@@ -57,12 +57,13 @@ def patiently(&block)
     yield
 
   rescue => e
-    puts e
-    puts e.backtrace
+
 
     until Time.now > end_time
       retry
     end
+    puts e
+    puts e.backtrace
     raise e
   end
 end
