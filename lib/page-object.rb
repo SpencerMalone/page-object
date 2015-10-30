@@ -48,7 +48,7 @@ require 'selenium/webdriver/common/error'
 
 def patiently(&block)
   cycles = 0
-  end_time ||= Time.now + 10
+  end_time ||= Time.now + 5
 
   begin
     unless (@browser.nil?)
