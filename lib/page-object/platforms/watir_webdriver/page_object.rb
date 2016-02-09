@@ -1022,6 +1022,7 @@ module PageObject
           end
           rescue
           end
+        end
           switch_to_default_content(frame_identifiers)
           type.new(element, :platform => :watir_webdriver)
         end
