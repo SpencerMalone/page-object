@@ -321,7 +321,8 @@ module PageObject
         #
         def click_link_for(identifier)
           call = call_for_watir_element(identifier, "link(identifier)")
-          process_watir_call("#{call}.click if identifier", Elements::Link, identifier)
+          find_watir_element(call, Elements::Link, identifier).click
+         # process_watir_call("#{call}.click if identifier", Elements::Link, identifier)
         end
 
         #
@@ -463,7 +464,8 @@ module PageObject
         #
         def click_button_for(identifier)
           call = call_for_watir_element(identifier, "button(identifier)")
-          process_watir_call("#{call}.click", Elements::Button, identifier)
+          find_watir_element(call, Elements::Button, identifier).click
+          #process_watir_call("#{call}.click", Elements::Button, identifier)
         end
 
         #
@@ -866,7 +868,8 @@ module PageObject
         # platform method to click on an area
         #
         def click_area_for(identifier)
-          process_watir_call("area(identifier).click", Elements::Area, identifier, nil, 'area')
+          find_watir_element("area(identifier)", Elements::Area, identifier, 'area').click
+         # process_watir_call("area(identifier).click", Elements::Area, identifier, nil, 'area')
         end
 
         #
@@ -1005,7 +1008,18 @@ module PageObject
 
         def find_watir_element(the_call, type, identifier, tag_name=nil)
           identifier, frame_identifiers = parse_identifiers(identifier, type, tag_name)
+          elements = find_watir_elements(the_call.gsub('(identifier)','s(identifier)'), type, identifier, tag_name)
           element = @browser.instance_eval "#{nested_frames(frame_identifiers)}#{the_call}"
+          unless element.visible?
+          elements.each do |elementfind|
+            begin
+              if elementfind.visible?
+                element = elementfind
+              end
+            rescue
+            end
+          end
+          end
           switch_to_default_content(frame_identifiers)
           type.new(element, :platform => :watir_webdriver)
         end
