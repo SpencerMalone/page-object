@@ -1008,9 +1008,10 @@ module PageObject
 
         def find_watir_element(the_call, type, identifier, tag_name=nil)
           identifier, frame_identifiers = parse_identifiers(identifier, type, tag_name)
-          elements = find_watir_elements(the_call.gsub('(identifier)','s(identifier)'), type, identifier, tag_name)
           element = @browser.instance_eval "#{nested_frames(frame_identifiers)}#{the_call}"
           unless element.visible?
+          begin
+          elements = find_watir_elements(the_call.gsub('(identifier)','s(identifier)'), type, identifier, tag_name)
           elements.each do |elementfind|
             begin
               if elementfind.visible?
@@ -1019,6 +1020,7 @@ module PageObject
             rescue
             end
           end
+          rescue
           end
           switch_to_default_content(frame_identifiers)
           type.new(element, :platform => :watir_webdriver)
